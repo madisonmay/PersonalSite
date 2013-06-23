@@ -1,0 +1,275 @@
+//- Optimizations:
+//-     - only keep track of points that are adjacent to "alive" points (i.e. have 1+ neighbors)
+//-     - fft instead of iterative approach
+
+extends layout
+
+block scripts
+    script(src='/javascripts/d3.min.js')
+    script(src='/javascripts/numeric.min.js')
+    link(href='http://fonts.googleapis.com/css?family=Lato', rel='stylesheet', type='text/css')
+    style(type='text/css')
+        html, body {
+            margin: 0;
+            padding: 0px;
+        }
+
+        body {
+            margin-top: 25px;
+            font-family: 'Lato', sans-serif;
+        }
+
+        svg, #grid {
+            display: block;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        #grid {
+            margin-top: 75px;
+        }
+
+        .buttons {
+            text-align: center;
+        }
+
+        .btn {
+            margin-left: 5px;
+            margin-right: 5px;
+            margin-top: 10px;
+            margin-bottom: 0px;
+        }
+
+        #clear {
+            display: inline-block;
+        }
+
+        #stepforward {
+            display: inline-block;
+        }
+
+        #play {
+            display: inline-block;
+        }
+
+        #title {
+            text-align: center;
+            font-family: Lato;
+            height: 0px;
+            margin-bottom: -25px;
+            margin-top: -15px;
+        }
+
+    script
+        $(document).ready(function() {
+            window.mouseheld = false;
+            $('body').mousedown(function() {
+                window.mouseheld = true;
+            })
+            $('body').mouseup(function() {
+                window.mouseheld = false;
+            })
+        })
+
+block content
+    h1#title Conway's Game of Life
+    div#grid
+    div.buttons
+        button#stepforward.btn.btn-success >>
+        button#clear.btn.btn-success Clear
+        button#play.btn.btn-success ►
+
+    script
+        var transparent = "rgba(0, 0, 0, 0.0)";
+        var light = "rgba(51, 51, 51, 0.5)";
+        var dark = "rgba(51, 51, 51, 1.0)";
+        var green = "rgba(51, 200, 51, 1.0)"
+        var size = 15;
+        var width = window.innerWidth - 50;
+        var height = window.innerHeight - 125;
+        window.alive = [];
+        window.playing = false;
+
+        $('#grid').width(width-size);
+
+        $(window).resize(function() {
+            $('body').css('min-width', width);
+        })
+
+        var data = [];
+        for (var row = 0; row < height/size - 1; row++) {
+            window.alive.push([]);
+            for (var column = 0; column < width/size - 1; column++) {
+                data.push([column, row]);
+                window.alive[row].push(0);
+            }
+        }
+
+        function zeroPadded(array) {
+            var result = [];
+            var vert_pad = Array(array[0].length + 2);
+            for (var i=0; i<array[0].length + 2; i++) {
+                vert_pad[i] = 0;
+            }
+            for (var i=0; i<array.length; i++) {
+                var row = array[i].slice(0)
+                row.unshift(0);
+                row.push(0);
+                result.push(row);
+            }
+            result.unshift(vert_pad);
+            result.push(vert_pad);
+            return result;
+        };
+
+        function convolve(array, kernel) {
+            //inefficient, but it gets the job done
+            window.bit_array = array;
+            var result = Array(array.length - 2);
+            var loss = Math.floor(kernel.length/2);
+            for (var i=loss; i<array.length-loss; i++) {
+                result[i-loss] = [];
+                for (var j=loss; j<array[i].length-loss; j++) {
+                    var sum = 0;
+                    for (var k=0; k<kernel.length; k++) {
+                        for (var l=0; l<kernel[k].length; l++) {
+                            sum = sum + kernel[k][l] * array[i+k-loss][j+l-loss];
+                        }
+                    }
+                    result[i-loss].push(sum);
+                }
+            }
+            return result;
+        }
+
+        var kernel = [[1, 1, 1],[1, 0, 1],[1, 1, 1]];
+
+        function refreshBlock(block) {
+            if (!block.alive) {
+                block.alive = true;
+                var row = $(block).attr('row');
+                var col = $(block).attr('column');
+                window.alive[row][col] = 1;
+                d3.select(block).style("fill", dark);
+            } else {
+                block.alive = false;
+                var row = $(block).attr('row');
+                var col = $(block).attr('column');
+                window.alive[row][col] = 0;
+                d3.select(block).style("fill", transparent);
+            }
+        }
+
+        var svg = d3.select("#grid")
+            .append("svg:svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        svg.selectAll("rect")
+            .data(data)
+            .enter()
+            .append("svg:rect")
+            .style("stroke", dark)
+            .style("fill", transparent)
+            .attr("x", function(d) { return d[0] * size; })
+            .attr("y", function(d) { return d[1] * size; })
+            .attr("row", function(d) { return d[1]; })
+            .attr("column", function(d) { return d[0]; })
+            .attr("height", size)
+            .attr("width", size)
+            .attr("alive", false)
+            .on("mouseover", function(){
+                if (window.mouseheld) {
+                    refreshBlock(this);
+                } else {
+                    d3.select(this).style("fill", light);
+                }
+             })
+            .on("mouseout", function(){
+                if (!this.alive) {
+                    d3.select(this).style("fill", transparent);
+                } else {
+                    d3.select(this).style("fill", dark);
+                }
+             })
+            .on("click", function() {
+                refreshBlock(this);
+             })
+
+        $('.btn').click(function() {
+            window.mouseheld = false;
+        });
+
+        $('#clear').click(function() {
+            if (window.playing) {
+                $('#play').click();
+            }
+            svg.selectAll("rect")
+                .style("stroke", dark)
+                .style("fill", transparent)
+                .attr("alive", false)
+        });
+
+        function evolveCell(i, j) {
+            if (!window.alive[i][j]) {
+                if (window.neighbor_counts[i][j] == 3) {
+                    window.alive[i][j] = 1;
+                }
+            } else if (window.neighbor_counts[i][j] < 2) {
+                window.alive[i][j] = 0;
+            } else if (window.neighbor_counts[i][j] > 3) {
+                window.alive[i][j] = 0;
+            }
+        }
+
+        function stepForward() {
+            if (!window.playing) {
+                return;
+            }
+            matrix = zeroPadded(window.alive);
+            window.neighbor_counts = convolve(matrix, kernel);
+            for (var i=0; i<window.neighbor_counts.length; i++) {
+                for (var j=0; j<window.neighbor_counts[i].length; j++) {
+                    evolveCell(i, j);
+                }
+            }
+
+            svg.selectAll("rect")
+                .style("stroke", dark)
+                .style("fill", function() {
+                    var row = $(this).attr('row');
+                    var col = $(this).attr('column');
+                    if (window.alive[row][col]) {
+                        return dark;
+                    } else {
+                        return transparent;
+                    }
+                })
+                .attr("alive", function() {
+                    var row = $(this).attr('row');
+                    var col = $(this).attr('column');
+                    if (window.alive[row][col]) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                });
+        }
+
+        $('#stepforward').click(function() {
+            window.playing = true;
+            stepForward();
+            window.playing = false;
+        });
+
+        $('#play').click(function() {
+            if (!window.playing) {
+                window.playing = true;
+                window.timer = setInterval(function() {stepForward();}, 100);
+                $(this).html("||");
+            } else {
+                window.playing = false;
+                clearInterval(window.timer);
+                $(this).html("►");
+            }
+        });

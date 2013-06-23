@@ -1,0 +1,161 @@
+/** {
+    border: 2px black solid;
+}*/
+
+html {
+    background-color: #eeeeee;
+}
+
+body {
+    background-color: #eeeeee;
+    font-family: 'Lato', sans-serif;
+    padding: 25px;
+}
+
+.center-text {
+    text-align: center;
+}
+
+.large-text {
+    font-size: 50px;
+    cursor: pointer;
+    cursor: hand;
+}
+
+.dark-text {
+    color: #333333;
+}
+
+.centered {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.px100 {
+    height: 100px;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.center {
+    float: none;
+    margin-left: auto 0px;
+    margin-right: auto 0px;
+}
+
+.circle {
+    border-radius: 200px;
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    background-color: #eeeeee;
+    z-index: 2;
+}
+
+.border {
+    border: 20px #333333 solid;
+    background-color: transparent;
+    border-radius: 200px;
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    z-index: 100;
+}
+
+.main-icon {
+    width: 175px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#code {
+    background-image: url('/images/code2.png');
+    background-position:50% 50%;
+    background-repeat:no-repeat;
+}
+
+#design {
+    background-image: url('/images/design.png');
+    background-position:50% 50%;
+    background-repeat:no-repeat;
+}
+
+#bio {
+    background-image: url('/images/bio.png');
+    background-position:50% 50%;
+    background-repeat:no-repeat;
+}
+
+
+.large-text {
+    font-size: 50px;
+    max-width: 150px;
+    cursor: pointer;
+}
+
+.fade_line{
+    display:block;
+    border:none;
+    color:white;
+    height:2px;
+    background:black;
+    background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 1000, from(#333), to(#fff));
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.opaque {
+    display: block;
+    position: absolute;
+    margin-left:-1px;
+    margin-top:-1px;
+    width:202px;
+    height:202px;
+    background-color:#000000;
+    opacity:0;
+    -moz-opacity:0;
+    border-radius:150px;
+    z-index: 2;
+    text-align: center;
+    color: #eeeeee;
+    cursor: pointer;
+}
+
+.label-text {
+    font-size: 50px;
+    margin-top: 90px;
+}
+
+.description {
+    font-size: 20px;
+    text-align: center;
+}
+
+
+/*@font-face {
+  font-family: 'Lato';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Lato Light'), local('Lato-Light'), url('/stylesheets/lato.woff'), format('woff');
+}
+*/
+.text-left {
+    text-align: left;
+}
+/*
+* {
+    border: 2px black solid;
+}*/
