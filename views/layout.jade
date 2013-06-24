@@ -6,9 +6,10 @@ html
     link(rel='stylesheet', href='/stylesheets/bootstrap-combined.min.css')
     link(rel='stylesheet', href='/stylesheets/jquery-ui.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-  body
-    block content
     script(src='/javascripts/jquery.min.js')
     script(src='/javascripts/bootstrap.min.js')
     script(src='/javascripts/jquery-ui.min.js')
+    block header_scripts
+  body
+    block content
     block scripts
