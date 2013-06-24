@@ -83,6 +83,9 @@ html {
     z-index: 10;
 }
 
+#part-time {
+}
+
 #banner {
     position: absolute;
     background-color: #222222;
@@ -91,6 +94,7 @@ html {
     top: 20px;
     left: -6px;
     border: 6px double #555555;
+    min-width: 940px;
 }
 
 .window-container {
@@ -153,7 +157,9 @@ body {
     background-color: #eeeeee;
     font-family: 'Lato', sans-serif;
     padding: 25px;
-    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    min-width: 850px;
 }
 
 .center-text {
