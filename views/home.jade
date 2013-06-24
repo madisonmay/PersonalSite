@@ -4,44 +4,157 @@ block scripts
   script
     $(document).ready(function() {
       $('.border').mouseover(function() {
-        $(this).stop(true).animate({"borderColor": "#46a546"}, 500);
+        $(this).stop(true).animate({"background-color": "#46a546", 'border-color': '#46a546'}, 500);
         $(this).children('.circle').children('.opaque').stop(true)
         .animate({'opacity': '.9', '-moz-opacity': '.9', 'filter': 'alpha(opacity=.9)'}, 500);
       });
       $('.border').mouseout(function() {
-        $(this).stop(true).animate({"borderColor": "#333333"}, 500);
+        $(this).stop(true).animate({"background-color": "#222222", 'border-color': '#555555'}, 500);
         $(this).children('.circle').children('.opaque').stop(true)
         .animate({'opacity': '0', '-moz-opacity': '0', 'filter': 'alpha(opacity=.0)'}, 500);
       });
+
+      $('#green-diag').mouseover(function() {
+        $(this).addClass('active');
+      });
+      $('#green-diag').mouseout(function() {
+        $(this).removeClass('active');
+      });
+
+      $('#right-arrow').mouseover(function() {
+        $(this).stop(true).animate({"background-color": "#46a546"}, 500);
+      });
+      $('#right-arrow').mouseout(function() {
+        $(this).stop(true).animate({"background-color": "#eeeeee"}, 500);
+      });
+      $('#right-arrow').click(function() {
+        $(".window").stop(true).animate({"left": "+=175px"}, 2000);
+        clearInterval(window.timerId);
+        window.timerId = setInterval(function() {$('#right-arrow').click();}, 10000);
+      })
+
+      $('#left-arrow').mouseover(function() {
+        $(this).stop(true).animate({"background-color": "#46a546"}, 500);
+      });
+      $('#left-arrow').mouseout(function() {
+        $(this).stop(true).animate({"background-color": "#eeeeee"}, 500);
+      });
+      $('#left-arrow').click(function() {
+        $(".window").stop(true).animate({"left": "-=175px"}, 2000);
+        clearInterval(window.timerId);
+        window.timerId = setInterval(function() {$('#right-arrow').click();}, 10000);
+      })
+
+      $(document).keydown(function(e){
+          if (e.keyCode === 37) {
+             $(".window").css("left", "-=10");
+             clearInterval(window.timerId);
+             window.timerId = setInterval(function() {$('#right-arrow').click();}, 10000);
+          }
+      });
+
+      $(document).keydown(function(e){
+          if (e.keyCode === 39) {
+             $(".window").css('left', "+=10");
+             clearInterval(window.timerId);
+             window.timerId = setInterval(function() {$('#right-arrow').click();}, 10000);
+          }
+      });
+
+      $('.window-text').mouseover(function() {
+        $(this).stop(true).animate({"background-color": "rgba(0, 0, 0, 0.9)"}, 500);
+        $(this).html($(this).attr('hidden-text'));
+      });
+
+      $('.window-text').mouseout(function() {
+        $(this).stop(true).animate({"background-color": "rgba(0, 0, 0, 0)"}, 500);
+        $(this).html('');
+      });
+
+      window.timerId = setInterval(function() {$('#right-arrow').click();}, 10000);
+
+      //- var roles = ['software developer', 'designer', 'engineering student'];
+      var roles = ['developer', 'designer', 'engineer', 'student'];
+      var base_text = 'Part time ';
+      window.role_index = 1;
+
+      setInterval(function() {
+        var index = window.role_index % roles.length;
+        $('#role').fadeOut(750, function() {
+          $('#role').html(roles[index]);
+          $('#role').fadeIn(750);
+        })
+
+        window.role_index++;
+        }, 5000)
+
+      $('#role').mouseover(function() {
+        $(this).stop(true).animate({'color': '#46a546'}, 500);
+        $('#banner').stop(true).animate({'border-color': '#46a546'}, 500);
+      })
+
+      $('#role').mouseout(function() {
+        $(this).stop(true).animate({'color': '#eeeeee'}, 500);
+        $('#banner').stop(true).animate({'border-color': '#555555'}, 500);
+      })
     });
 
 block content
   div.full-width.px100.dark-text.text-left
-    h1#home.large-text(style='margin-left: 5%;') Madison May
-    hr.fade_line
+    div#diag.one-edge-shadow
+    div#banner
+    //- div.window-container
+    //-   div.window.one-edge-shadow#coplay
+    //-     a(href='http://coplay.herokuapp.com')
+    //-       div.window-text(hidden-text='Social<br>Music')
+    //-   div.window.one-edge-shadow#GOL(style='margin-left: 175px;')
+    //-     a(href='/automata')
+    //-       div.window-text(hidden-text='Game of<br>Life')
+    //-   div.window.one-edge-shadow#ascii(style='margin-left: 350px;')
+    //-     a(href='http://github.com/madisonmay/Asciify_Final')
+    //-       div.window-text(hidden-text='Video to<br>Ascii')
+    //- img#right-arrow(src='/images/right_transparent.png')
+    //- img#left-arrow(src='/images/left_transparent.png')
+    div#part-time(style='color: #eeeeee; font-size: 50px; position: absolute; top: 70px; left: 400px;')
+      | Part time
+      span#role(style='margin-left: 10px; cursor: hand; cursor: pointer;')
+        | developer
+    div#green-diag(style='margin-left: 0%; margin-top: -0px; z-index: 1000; position: absolute;')
+      img(src='/images/splatter.png', style='height: 150px; margin-top: -25px;')
+      h1#home.large-text(style='margin-left: 80px; margin-top: -115px;') Madison May
+    //- hr.fade_line
 
-  div.row-fluid.not-too-small
+  div.row-fluid.not-too-small(style='margin-top: 50px;')
     div.span4
-      a(href='/code')
+      //- a(href='/code')
+      a(href='https://github.com/madisonmay')
         div.border
           div#code.circle
             div.opaque
               div.label-text Code
       div.description
-        | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        | "Controlling complexity is the essence of computer programming."
+        br
+        | — Brian Kernighan —
     div.span4
       a(href='/bio')
+      a(href='http://madisonmay.olinstudents.com/')
         div.border
           #bio.circle
             div.opaque
               div.label-text Bio
       div.description
-        | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        | "All life is an experiment. The more experiments you make the better."
+        br
+        | — Ralph Waldo Emerson —
     div.span4
-      a(href='/design')
+      //- a(href='/design')
+      a(href='https://github.com/madisonmay')
         div.border
           div#design.circle
             div.opaque
               div.label-text Design
       div.description
-        | Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        | "Design is not just what it looks like and feels like. Design is how it works."
+        br
+        | — Steve Jobs —
