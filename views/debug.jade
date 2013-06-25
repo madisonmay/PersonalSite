@@ -1,0 +1,32 @@
+//- Optimizations:
+//-     - only keep track of points that are adjacent to "alive" points (i.e. have 1+ neighbors)
+//-     - fft instead of iterative approach
+
+extends layout
+
+block scripts
+
+block header_scripts
+    script(src='/javascripts/d3.min.js')
+    link(href='http://fonts.googleapis.com/css?family=Lato:300', rel='stylesheet', type='text/css')
+    style(type='text/css')
+        html, body {
+            margin: 0;
+            padding: 0px;
+        }
+
+        body {
+            margin-top: 25px;
+            font-family: 'Lato', sans-serif;
+        }
+
+        #title {
+            text-align: center;
+            font-family: Lato;
+            height: 0px;
+            margin-bottom: -25px;
+            margin-top: -15px;
+        }
+
+block content
+    h1#title Debug.js
