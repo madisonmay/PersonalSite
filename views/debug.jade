@@ -27,6 +27,39 @@ block header_scripts
             margin-bottom: -25px;
             margin-top: -15px;
         }
+    script
+        $(document).ready(function() {
+            var x = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 1, 1, 1, 1, 1, 1, 1];
+            function monitorVars(string) {
+                var re = /(?:var\s+)?(\w+)\s*\=\s*.+\;*$/;
+                var variable = re.exec(string)[1];
+                if (typeof(variable) == "undefined") {
+                    prior_value = undefined;
+                } else {
+                    prior_value = eval(variable);
+                }
+
+                if (prior_value instanceof Array) {
+                    prior_value = Array(prior_value);
+                }
+
+                eval(string);
+                current_value = eval(variable);
+
+                if (current_value instanceof Array) {
+                    current_value = Array(current_value);
+                }
+
+                console.log(string, '    //', prior_value, ' => ', variable, ' => ', current_value);
+            }
+
+            function monitorScript(string) {
+
+            }
+
+            str = "var x = [1, 2, 3];";
+            monitorVars(str);
+        })
 
 block content
     h1#title Debug.js
