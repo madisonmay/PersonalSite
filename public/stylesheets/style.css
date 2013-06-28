@@ -2,14 +2,121 @@
     border: 2px black solid;
 }*/
 
+::-webkit-scrollbar {
+height:16px;
+width:16px;
+}
+
+::-webkit-scrollbar-button {
+height:0;
+width:0;
+}
+
+::-webkit-scrollbar-button:start:decrement,::-webkit-scrollbar-button:end:increment {
+display:block;
+}
+
+::-webkit-scrollbar-button:vertical:start:increment,::-webkit-scrollbar-button:vertical:end:decrement {
+display:none;
+}
+
+::-webkit-scrollbar-track:vertical,::-webkit-scrollbar-track:horizontal,::-webkit-scrollbar-thumb:vertical,::-webkit-scrollbar-thumb:horizontal,. ::-webkit-scrollbar-track:vertical,. ::-webkit-scrollbar-track:horizontal,. ::-webkit-scrollbar-thumb:vertical,. ::-webkit-scrollbar-thumb:horizontal {
+border-color:transparent;
+border-style:solid;
+}
+
+::-webkit-scrollbar-track:vertical {
+background-clip:padding-box;
+background-color:#fff;
+border-left-width:5px;
+border-right-width:0;
+}
+
+::-webkit-scrollbar-track:horizontal {
+background-clip:padding-box;
+background-color:#fff;
+border-bottom-width:0;
+border-top-width:5px;
+}
+
+::-webkit-scrollbar-thumb {
+-webkit-box-shadow:inset 1px 1px 0 rgba(0,0,0,.1),inset 0 -1px 0 rgba(0,0,0,.07);
+background-clip:padding-box;
+background-color:rgba(0,0,0,.2);
+min-height:28px;
+padding-top:100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+-webkit-box-shadow:inset 1px 1px 1px rgba(0,0,0,.25);
+background-color:rgba(0,0,0,.4);
+}
+
+::-webkit-scrollbar-thumb:active {
+-webkit-box-shadow:inset 1px 1px 3px rgba(0,0,0,.35);
+background-color:rgba(0,0,0,.5);
+}
+
+::-webkit-scrollbar-thumb:vertical {
+border-width:0 0 0 5px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+border-width:5px 0 0;
+}
+
+::-webkit-scrollbar-track:vertical {
+border-left-width:6px;
+border-right-width:1px;
+}
+
+::-webkit-scrollbar-track:horizontal {
+border-bottom:1px;
+border-top:6px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+border-width:0 1px 0 6px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+border-bottom:1px;
+border-top:6px;
+border-width:0;
+}
+
+::-webkit-scrollbar-track:hover {
+-webkit-box-shadow:inset 1px 0 0 rgba(0,0,0,.1);
+background-color:rgba(0,0,0,.05);
+}
+
+::-webkit-scrollbar-track:active {
+-webkit-box-shadow:inset 1px 0 0 rgba(0,0,0,.14),inset -1px -1px 0 rgba(0,0,0,.07);
+background-color:rgba(0,0,0,.05);
+}
+
 @font-face
 {
     font-family: Lato;
     src: url("/images/Lato-Light.ttf");
 }
 
+/*Under no circumstances will scrollbars be displayed --
+ but if something goes wrong, they better be classy Google scrollbars*/
+
 html {
+    max-height: 100%;
+    max-width: 100%;
     background-color: #eeeeee;
+    overflow: hidden;
+    position: relative;
+}
+
+body {
+    max-height: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    position: relative;
 }
 
 .one-edge-shadow {
