@@ -193,8 +193,7 @@ block header_scripts
             }
         }
 
-        $(document).ready(function() {
-
+        function beginAnimation() {
             //check if mouse button is down
             var mouseDown = 0;
             document.body.onmousedown = function(e) {
@@ -234,13 +233,13 @@ block header_scripts
                 //- followMouse(px, py, rows, cols, mouseDown);
                 //- modifyPoints(delta, rows, cols);
             }, 50);
+        }
+
+        $(document).ready(function() {
+            beginAnimation();
         })
 
         $(window).resize(function() {
-            initial_variation = 15;
-            rows = 4;
-            cols = 5;
-            preparePoints(rows, cols, initial_variation);
-            renderGrid();
+            beginAnimation();
         });
 
