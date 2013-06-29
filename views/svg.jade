@@ -1,0 +1,208 @@
+extends layout
+
+block header_scripts
+    script(src='/javascripts/raphael.js');
+    style
+        html {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            min-width: 100%;
+        }
+
+    script
+
+        function replaceAll(find, replace, str) {
+          return str.replace(new RegExp(find, 'g'), replace);
+        }
+
+        function template(tpl, o) {
+            for(var key in o)
+                {
+                    if(o.hasOwnProperty(key))// prevent iteration on any prototype inherited methods
+                        tpl = replaceAll('{'+key+'}',o[key], tpl);
+                }
+            return tpl;
+        }
+
+
+        function quadrilateral(svg, top_left, top_right, bottom_right, bottom_left) {
+            var x = top_left.x;
+            var y = top_left.y;
+            var delta_top_x = top_right.x - top_left.x;
+            var delta_top_y = top_right.y - top_left.y;
+            var delta_right_x = bottom_right.x - top_right.x;
+            var delta_right_y = bottom_right.y - top_right.y;
+            var delta_bottom_x = bottom_left.x - bottom_right.x;
+            var delta_bottom_y = bottom_left.y - bottom_right.y;
+            var delta_left_x = top_left.x - bottom_left.x;
+            var delta_left_y = top_left.y - bottom_left.y;
+            var template_string = "M {x} {y} l {delta_top_x} {delta_top_y} l {delta_right_x} {delta_right_y} " +
+                                  "l {delta_bottom_x} {delta_bottom_y} l {delta_left_x} {delta_left_y} z";
+            var path_string = template(template_string, {'x': x, 'y': y, 'delta_top_x': delta_top_x, 'delta_top_y': delta_top_y,
+                                                         'delta_right_x': delta_right_x, 'delta_right_y': delta_right_y,
+                                                         'delta_bottom_x': delta_bottom_x, 'delta_bottom_y': delta_bottom_y,
+                                                         'delta_left_x': delta_left_x, 'delta_left_y': delta_left_y});
+            return svg.path(path_string);
+        }
+
+        function sign(x) { return x ? x < 0 ? -1 : 1 : 0; }
+
+        function preparePoints(rows, cols, delta) {
+            window.points = new Array(rows*cols);
+            var height = $(window).innerHeight();
+            var width = $(window).innerWidth();
+            var h = height/rows;
+            var w = width/cols;
+            for (var i=0; i<=cols; i++) {
+                for (var j=0; j<=rows; j++) {
+                    if (i === 0) {
+                        var x = 0;
+                    } else if (i === cols) {
+                        var x = width;
+                    } else {
+                        var x = w * i + Math.floor(Math.random() * (2 * delta + 1) - delta);
+                    }
+
+                    if (j === 0) {
+                        var y = 0;
+                    } else if (j === rows) {
+                        var y = height;
+                    } else {
+                        var y = h * j + Math.floor(Math.random() * (2 * delta + 1) - delta);
+                    }
+                    window.points[cols*i + j] = {'x': x, 'y': y};
+                }
+            }
+        }
+
+        function modifyPoints(delta, rows, cols) {
+            if (!window.simulation) {
+                return;
+            }
+            for (var i=0; i<=cols; i++) {
+                for (var j=0; j<=rows; j++) {
+                    if (i === 0) {
+                        var rand_x = 0;
+                    } else if (i === cols) {
+                        var rand_x = 0;
+                    } else {
+                        var rand_x = Math.floor(Math.random() * (2 * delta + 1) - delta);
+                    }
+
+                    if (j === 0) {
+                        var rand_y = 0;
+                    } else if (j === rows) {
+                        var rand_y = 0;
+                    } else {
+                        var rand_y = Math.floor(Math.random() * (2 * delta + 1) - delta);
+                    }
+                    window.points[cols*i + j]['x'] = window.points[cols*i + j]['x'] + rand_x;
+                    window.points[cols*i + j]['y'] = window.points[cols*i + j]['y'] + rand_y;
+                }
+            }
+        }
+
+        function followMouse(px, py, rows, cols, mouseDown) {
+            if (!window.simulation) {
+                return;
+            }
+            var mult = mouseDown ? -1 : 1;
+            for (var i=0; i<=cols; i++) {
+                for (var j=0; j<=rows; j++) {
+                    if (i === 0) {
+                        var move_x = 0;
+                    } else if (i === cols) {
+                        var move_x = 0;
+                    } else {
+                        var move_x = mult * sign(window.points[cols*i + j]['x'] - px);
+                    }
+
+                    if (j === 0) {
+                        var move_y = 0;
+                    } else if (j === rows) {
+                        var move_y = 0;
+                    } else {
+                        var move_y = mult * sign(window.points[cols*i + j]['y'] - py);
+                    }
+                    window.points[cols*i + j]['x'] = window.points[cols*i + j]['x'] + move_x;
+                    window.points[cols*i + j]['y'] = window.points[cols*i + j]['y'] + move_y;
+                }
+            }
+        }
+
+        function renderGrid(rows, cols) {
+            if (!window.simulation) {
+                return;
+            }
+            $('svg').remove();
+            var colors = ["#1abc9c", "#2ecc71", "#3498db", "#9b59b6", "#34495e",
+                          "#16a085", "#27ae60", "#2980b9", "#8e44ad", "#2c3e50",
+                          "#f1c40f", "#e67e22", "#e74c3c", "#ecf0f1", "#95a5a6",
+                          "#f39c12", "#d35400", "#c0392b", "#bdc3c7", "#7f8c8d"];
+
+            var svg = Raphael(0, 0, "100%", "100%");
+            for (var i=0; i<cols; i++) {
+                for (var j=0; j<rows; j++) {
+                    var top_left = window.points[cols*i + j];
+                    var top_right = window.points[cols*(i + 1) + j];
+                    var bottom_right = window.points[cols*(i+1) + j + 1];
+                    var bottom_left = window.points[cols*i + j + 1];
+                    var path = quadrilateral(svg, top_left, top_right, bottom_right, bottom_left);
+                    path.attr({fill: colors[cols*j + i], stroke: '#ddd', 'stroke-width': 5});
+                }
+            }
+        }
+
+        $(document).ready(function() {
+
+            //check if mouse button is down
+            var mouseDown = 0;
+            document.body.onmousedown = function(e) {
+                ++mouseDown;
+            }
+            document.body.onmouseup = function(e) {
+                --mouseDown;
+            }
+
+            //retrieve location of pointer
+            var px;
+            var py;
+            document.onmousemove = function(e){
+                px = e.pageX;
+                py = e.pageY;
+            }
+
+            window.simulation = true;
+            document.body.ondblclick = function (e) {
+                window.simulation = window.simulation ? 0 : 1;
+            }
+
+            initial_variation = 0;
+            delta = 1;
+            rows = 4;
+            cols = 5;
+            preparePoints(rows, cols, initial_variation);
+            setInterval(function() {
+                renderGrid(rows, cols);
+                followMouse(px, py, rows, cols, mouseDown);
+            }, 50);
+        })
+
+        $(window).resize(function() {
+            initial_variation = 0;
+            rows = 4;
+            cols = 5;
+            preparePoints(rows, cols, initial_variation);
+            renderGrid();
+        });
+
