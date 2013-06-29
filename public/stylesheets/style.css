@@ -146,6 +146,7 @@ body {
     left: -1960px;
     color: #222222;
     height: 200px;
+    /*background-color: #c0392b;*/
     background-color: #46a546;
     z-index: 10;
     border: 6px double #555555;
