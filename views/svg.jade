@@ -140,6 +140,36 @@ block header_scripts
             }
         }
 
+        function singleBlock(px, py, rows, cols, w, h, mouseDown) {
+            if (!window.simulation) {
+                return;
+            }
+            var mult = mouseDown ? -1 : 1;
+            for (var i=1; i<=cols-1; i++) {
+                for (var j=1; j<=rows-1; j++) {
+                    if (window.points[cols*i + j]['y'] === 0) {
+                        continue;
+                    }
+                    if (window.points[cols*i + j]['x'] > (px + w)) {
+                        continue;
+                    }
+                    if (window.points[cols*i + j]['x'] < (px - w)) {
+                        continue;
+                    }
+                    if (window.points[cols*i + j]['y'] > (py + h)) {
+                        continue;
+                    }
+                    if (window.points[cols*i + j]['y'] < (py - h)) {
+                        continue;
+                    }
+                    var move_x = mult * sign(window.points[cols*i + j]['x'] - px);
+                    var move_y = mult * sign(window.points[cols*i + j]['y'] - py);
+                    window.points[cols*i + j]['x'] = window.points[cols*i + j]['x'] + move_x;
+                    window.points[cols*i + j]['y'] = window.points[cols*i + j]['y'] + move_y;
+                }
+            }
+        };
+
         function renderGrid(rows, cols) {
             if (!window.simulation) {
                 return;
@@ -183,23 +213,31 @@ block header_scripts
             }
 
             window.simulation = true;
-            document.body.ondblclick = function (e) {
+            document.body.onclick = function (e) {
                 window.simulation = window.simulation ? 0 : 1;
             }
 
-            initial_variation = 0;
+            //get window height and block height
+            //get window width and block width
+            var height = $(window).innerHeight();
+            var width = $(window).innerWidth();
+            var rows = 4;
+            var cols = 5;
+            var h = height/rows;
+            var w = width/cols;
+            initial_variation = 15;
             delta = 1;
-            rows = 4;
-            cols = 5;
             preparePoints(rows, cols, initial_variation);
             setInterval(function() {
                 renderGrid(rows, cols);
-                followMouse(px, py, rows, cols, mouseDown);
+                singleBlock(px, py, rows, cols, w, h, mouseDown);
+                //- followMouse(px, py, rows, cols, mouseDown);
+                //- modifyPoints(delta, rows, cols);
             }, 50);
         })
 
         $(window).resize(function() {
-            initial_variation = 0;
+            initial_variation = 15;
             rows = 4;
             cols = 5;
             preparePoints(rows, cols, initial_variation);
