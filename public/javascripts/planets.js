@@ -21,8 +21,8 @@ function template(tpl, o) {
 var timeout;
 window.G = Math.pow(10, -1);
 
-function distance(p1, p2) {
-    return Math.sqrt(Math.pow(p1.attrs.cx - p2.attrs.cx, 2) + Math.pow(p1.attrs.cy - p2.attrs.cy, 2))
+function distance2(p1, p2) {
+    return Math.pow(p1.attrs.cx - p2.attrs.cx, 2) + Math.pow(p1.attrs.cy - p2.attrs.cy, 2) * 1000
 }
 
 //- function direction(p1, p2) {
@@ -40,7 +40,7 @@ $(document).mousedown(function(event){
         }
 
         window.planet = window.svg.circle(window.cursorX, window.cursorY, 5);
-        window.planet.attrs.mass = Math.pi*Math.pow(window.planet.attrs.r, 2);
+        window.planet.attrs.mass = Math.PI*Math.pow(window.planet.attrs.r, 2);
         window.planet.attrs.velocity_angle = Math.atan((window.planet.attrs.cy - window.cursorY)/
                                                  (window.planet.attrs.cx - window.cursorX));
         window.planet.attrs.velocity = Math.sqrt(Math.pow(window.planet.attrs.cx - window.cursorX, 2)
@@ -53,7 +53,7 @@ $(document).mousedown(function(event){
         }
         window.planet.attrs.acceleration_angle = Math.atan((window.planet.attrs.cy - window.sun.attrs.cy)/
                                                      (window.planet.attrs.cx - window.sun.attrs.cx));
-        window.planet.attrs.acceleration = window.sun.attrs.mass * window.G / distance(window.planet, window.sun);
+        window.planet.attrs.acceleration = window.sun.attrs.mass * window.G / distance2(window.planet, window.sun);
         window.planet.attrs.aX = window.planet.attrs.acceleration * Math.cos(window.planet.attrs.acceleration_angle);
         window.planet.attrs.aY = window.planet.attrs.acceleration * Math.sin(window.planet.attrs.acceleration_angle);
         if (window.planet.attrs.cx > window.sun.attrs.cx) {
@@ -81,7 +81,7 @@ $(document).mouseup(function(event){
 
 function increaseSize(planet, px, py) {
     planet.animate({r: planet.attrs.r + 2}, 50);
-    planet.attrs.mass = Math.pi*Math.pow(planet.attrs.r, 2);
+    planet.attrs.mass = Math.PI*Math.pow(planet.attrs.r, 2);
     planet.attrs.velocity_angle = Math.atan((planet.attrs.cy - window.cursorY)/
                                              (planet.attrs.cx - window.cursorX));
     planet.attrs.velocity = Math.sqrt(Math.pow(planet.attrs.cx - window.cursorX, 2)
@@ -94,7 +94,7 @@ function increaseSize(planet, px, py) {
     }
     planet.attrs.acceleration_angle = Math.atan((planet.attrs.cy - window.sun.attrs.cy)/
                                                  (planet.attrs.cx - window.sun.attrs.cx));
-    planet.attrs.acceleration = window.sun.attrs.mass * window.G / distance(planet, window.sun);
+    planet.attrs.acceleration = window.sun.attrs.mass * window.G / distance2(planet, window.sun);
     planet.attrs.aX = planet.attrs.acceleration * Math.cos(planet.attrs.acceleration_angle);
     planet.attrs.aY = planet.attrs.acceleration * Math.sin(planet.attrs.acceleration_angle);
     if (planet.attrs.cx > window.sun.attrs.cx) {
@@ -110,7 +110,7 @@ function render() {
     window.sun = window.svg.circle(w/2, h/2, 80);
     var color = "#f1c40f";
     window.sun.attr({fill: color, stroke: color, 'stroke-width': 0});
-    window.sun.attrs.mass = 3.14*Math.pow(window.sun.attrs.r, 2);
+    window.sun.attrs.mass = Math.PI*Math.pow(window.sun.attrs.r, 2)*350000;
 }
 
 function iterate() {
@@ -128,9 +128,7 @@ function iterate() {
             if (!window.planets[i].attrs.aY) {
                 window.planets[i].attrs.aY = 0;
             }
-            window.planets[i].animate({cx: window.planets[i].attrs.cx + window.planets[i].attrs.vX/50}, 50);
-            window.planets[i].animate({cy: window.planets[i].attrs.cy + window.planets[i].attrs.vY/50}, 50);
-            window.planets[i].acceleration = window.sun.attrs.mass * window.G / distance(window.planets[i], window.sun);
+            window.planets[i].acceleration = window.sun.attrs.mass * window.G / distance2(window.planets[i], window.sun);
             window.planets[i].attrs.acceleration_angle = Math.atan((window.planets[i].attrs.cy - window.sun.attrs.cy)/
                                                          (window.planets[i].attrs.cx - window.sun.attrs.cx));
             window.planets[i].attrs.aX = window.planets[i].attrs.acceleration
@@ -143,8 +141,10 @@ function iterate() {
             }
 
             //damping constant of .999 added
-            window.planets[i].attrs.vX = .997*window.planets[i].attrs.vX + window.planets[i].attrs.aX;
-            window.planets[i].attrs.vY = .997*window.planets[i].attrs.vY + window.planets[i].attrs.aY;
+            window.planets[i].attrs.vX = window.planets[i].attrs.vX + window.planets[i].attrs.aX;
+            window.planets[i].attrs.vY = window.planets[i].attrs.vY + window.planets[i].attrs.aY;
+            window.planets[i].animate({cx: window.planets[i].attrs.cx + window.planets[i].attrs.vX/50}, 50);
+            window.planets[i].animate({cy: window.planets[i].attrs.cy + window.planets[i].attrs.vY/50}, 50);
         }
     }
 }
