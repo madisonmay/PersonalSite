@@ -70,7 +70,7 @@ $(document).mousedown(function(event){
     }
 });
 
-$(document).mouseup(function(){
+$(document).mouseup(function(event){
     if (event.which === 1) {
         window.planets.push(window.planet);
         window.planet = null;
