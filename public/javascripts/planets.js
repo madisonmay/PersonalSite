@@ -22,7 +22,7 @@ var timeout;
 window.G = Math.pow(10, -1);
 
 function distance2(p1, p2) {
-    return Math.pow(p1.attrs.cx - p2.attrs.cx, 2) + Math.pow(p1.attrs.cy - p2.attrs.cy, 2) * 1000
+    return Math.pow(p1.attrs.cx - p2.attrs.cx, 2) + Math.pow(p1.attrs.cy - p2.attrs.cy, 2)
 }
 
 //- function direction(p1, p2) {
@@ -44,7 +44,7 @@ $(document).mousedown(function(event){
         window.planet.attrs.velocity_angle = Math.atan((window.planet.attrs.cy - window.cursorY)/
                                                  (window.planet.attrs.cx - window.cursorX));
         window.planet.attrs.velocity = Math.sqrt(Math.pow(window.planet.attrs.cx - window.cursorX, 2)
-                                                 + Math.pow(window.planet.attrs.cy - window.cursorY, 2));
+                                                 + Math.pow(window.planet.attrs.cy - window.cursorY, 2))*3;
         window.planet.attrs.vX = window.planet.attrs.velocity * Math.cos(window.planet.attrs.velocity_angle);
         window.planet.attrs.vY = window.planet.attrs.velocity * Math.sin(window.planet.attrs.velocity_angle);
         if (window.planet.attrs.cx > window.cursorX) {
@@ -85,7 +85,7 @@ function increaseSize(planet, px, py) {
     planet.attrs.velocity_angle = Math.atan((planet.attrs.cy - window.cursorY)/
                                              (planet.attrs.cx - window.cursorX));
     planet.attrs.velocity = Math.sqrt(Math.pow(planet.attrs.cx - window.cursorX, 2)
-                                      + Math.pow(planet.attrs.cy - window.cursorY, 2));
+                                      + Math.pow(planet.attrs.cy - window.cursorY, 2))*3;
     planet.attrs.vX = planet.attrs.velocity * Math.cos(planet.attrs.velocity_angle);
     planet.attrs.vY = planet.attrs.velocity * Math.sin(planet.attrs.velocity_angle);
     if (planet.attrs.cx > window.cursorX) {
@@ -110,7 +110,7 @@ function render() {
     window.sun = window.svg.circle(w/2, h/2, 80);
     var color = "#f1c40f";
     window.sun.attr({fill: color, stroke: color, 'stroke-width': 0});
-    window.sun.attrs.mass = Math.PI*Math.pow(window.sun.attrs.r, 2)*350000;
+    window.sun.attrs.mass = Math.PI*Math.pow(window.sun.attrs.r, 2)*1000;
 }
 
 function iterate() {
@@ -143,8 +143,8 @@ function iterate() {
             //damping constant of .999 added
             window.planets[i].attrs.vX = window.planets[i].attrs.vX + window.planets[i].attrs.aX;
             window.planets[i].attrs.vY = window.planets[i].attrs.vY + window.planets[i].attrs.aY;
-            window.planets[i].animate({cx: window.planets[i].attrs.cx + window.planets[i].attrs.vX/50}, 50);
-            window.planets[i].animate({cy: window.planets[i].attrs.cy + window.planets[i].attrs.vY/50}, 50);
+            window.planets[i].animate({cx: window.planets[i].attrs.cx + window.planets[i].attrs.vX/120}, 100);
+            window.planets[i].animate({cy: window.planets[i].attrs.cy + window.planets[i].attrs.vY/120}, 100);
         }
     }
 }
@@ -157,5 +157,5 @@ $(document).ready(function() {
     }, 3000);
     setInterval(function() {
         iterate();
-    }, 50);
+    }, 100);
 })
