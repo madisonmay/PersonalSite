@@ -151,6 +151,10 @@ function iterate() {
 
 $(document).ready(function() {
     render();
+    setTimeout(function() {
+        $('#temp').css({"opacity": "0", "-ms-filter": "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)",
+                        "filter": "alpha(opacity=0)",  "-moz-opacity": "0", "-khtml-opacity": "0", "opacity": "0"});
+    }, 3000);
     setInterval(function() {
         iterate();
     }, 50);
