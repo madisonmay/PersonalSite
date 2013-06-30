@@ -143,8 +143,8 @@ function iterate() {
             }
 
             //damping constant of .999 added
-            window.planets[i].attrs.vX = .999*window.planets[i].attrs.vX + window.planets[i].attrs.aX;
-            window.planets[i].attrs.vY = .999*window.planets[i].attrs.vY + window.planets[i].attrs.aY;
+            window.planets[i].attrs.vX = .997*window.planets[i].attrs.vX + window.planets[i].attrs.aX;
+            window.planets[i].attrs.vY = .997*window.planets[i].attrs.vY + window.planets[i].attrs.aY;
         }
     }
 }
