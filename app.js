@@ -36,6 +36,7 @@ app.get('/', routes.index);
 app.get('/automata', code.automata);
 app.get('/debug', code.debug);
 app.get('/svg', code.svg);
+app.get('/planets', code.planets);
 
 app.listen(process.env.PORT || 3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

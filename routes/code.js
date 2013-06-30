@@ -10,3 +10,7 @@ exports.debug = function(req, res){
 exports.svg = function(req, res){
     res.render('svg', { title: 'SVG Playground' })
 }
+
+exports.planets = function(req, res){
+    res.render('planets', { title: 'Planets' });
+}
