@@ -37,6 +37,11 @@ app.get('/automata', code.automata);
 app.get('/debug', code.debug);
 app.get('/svg', code.svg);
 app.get('/planets', code.planets);
+app.get('/playground', code.playground);
+app.get('/bold', code.bold);
+app.get('/:id', function(req, res) {
+  res.render(req.params.id + ".jade");
+});
 
 app.listen(process.env.PORT || 3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

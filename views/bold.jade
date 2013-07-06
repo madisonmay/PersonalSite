@@ -1,0 +1,137 @@
+!!!
+html
+    head
+        title= title
+        meta(charset='utf-8')
+        script(src='/javascripts/jquery.min.js')
+        link(href='http://fonts.googleapis.com/css?family=Source+Code+Pro:400,700,900', rel='stylesheet', type='text/css')
+        style
+            //- * {
+            //-     border: 2px dotted white;
+            //- }
+
+            @font-face {
+              font-family: 'League Gothic';
+              font-style: normal;
+              font-weight: normal;
+              src: url('images/LeagueGothic-Regular.otf') format('opentype');
+            }
+
+            html {
+                padding: 0;
+                margin: 0;
+                height: 100%;
+                width: 100%;
+            }
+
+            body {
+                font-family: 'League Gothic', sans-serif;
+                padding: 0;
+                margin: 0;
+                height: 100%;
+                width: 100%;
+                overflow: hidden;
+            }
+
+            #color {
+                position: absolute;
+                top: 0;
+                left: 0;
+                color: white;
+                //- background-color: #076b0c;
+                background-color: black;
+                text-align: left;
+                height: 90%;
+                width: 100%;
+            }
+
+            #bottom {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                background-color: white;
+                width: 100%;
+                height: 10%;
+                min-height: 75px;
+                z-index: 20;
+            }
+
+            #title {
+                text-align: left;
+                position: absolute;
+                letter-spacing: .2em;
+                top: 40%;
+                height: 200px;
+                margin-top: -100px;
+                margin-left: 50px;
+                font-size: 175px;
+            }
+
+            .dot {
+                margin-right: 20px;
+                margin-left: 20px;
+            }
+
+            a {
+                text-decoration: none;
+                color: white;
+            }
+
+            span.link {
+                cursor: pointer;
+            }
+
+            .social {
+                height: 64px;
+                position: absolute;
+                top: 50%;
+                margin-top: -32px;
+                cursor: pointer;
+            }
+
+            a:hover .label, a.hover .label {
+                color: white
+            }
+
+            .label {
+                position: absolute;
+                margin-top: -30px;
+                color: black;
+                font-size: 25px;
+                width: 64px;
+                text-align: center;
+                transition: color 0.25s linear; /* vendorless fallback */
+                -o-transition: color 0.25s linear; /* opera */
+                -ms-transition: color 0.25 linear; /* IE 10 */
+                -moz-transition: color 0.25s linear; /* Firefox */
+                -webkit-transition: color 0.25s linear; /*safari and chrome */
+            }
+
+    body
+        div#color
+            div#title
+                div
+                    | MADISON
+                div(style='font-size: 25px; letter-spacing: .3em; margin-top: -10px; margin-left: 7px;')
+                    a(href='#developer')
+                        span.link DEVELOPER
+                    span.dot ⋅
+                    a(href='#designer')
+                        span.link DESIGNER
+                    span.dot ⋅
+                    a(href='#engineer')
+                        span.link ENGINEER
+
+        div#bottom
+            a(href='http://www.linkedin.com/profile/view?id=173626678', target = "_blank")
+                img.social(src='/images/linked-in.png', style='margin-left: 50px;')
+                div.label(style='margin-left: 50px;') LINKEDIN
+            a(href='https://www.facebook.com/madison.a.may', target = "_blank")
+                img.social(src='/images/facebook.png', style='margin-left: 134px;')
+                div.label(style='margin-left: 131px;') FACEBOOK
+            a(href='https://github.com/madisonmay', target = "_blank")
+                img.social(src='/images/github.png', style='margin-left: 218px;')
+                div.label(style='margin-left: 218px;') GITHUB
+            a(href='mailto:madison.may@students.olin.edu', target = "_blank")
+                img.social(src='/images/email.png', style='margin-left: 302px;')
+                div.label(style='margin-left: 302px;') EMAIL

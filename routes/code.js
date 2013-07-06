@@ -14,3 +14,11 @@ exports.svg = function(req, res){
 exports.planets = function(req, res){
     res.render('planets', { title: 'Planets' });
 }
+
+exports.playground = function(req, res) {
+    res.render('playground');
+}
+
+exports.bold = function(req, res) {
+    res.render('bold', { title: "Madison May"});
+}
