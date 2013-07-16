@@ -10,6 +10,14 @@ html
             //-     border: 2px dotted white;
             //- }
 
+            .color {
+                background-color: #222;
+            }
+
+            .font-color {
+                color: #222;
+            }
+
             @font-face {
               font-family: 'League Gothic';
               font-style: normal;
@@ -38,8 +46,6 @@ html
                 top: 0;
                 left: 0;
                 color: white;
-                //- background-color: #076b0c;
-                background-color: black;
                 text-align: left;
                 height: 90%;
                 width: 100%;
@@ -82,7 +88,6 @@ html
             }
 
             .social {
-                height: 64px;
                 position: absolute;
                 top: 50%;
                 margin-top: -32px;
@@ -96,7 +101,6 @@ html
             .label {
                 position: absolute;
                 margin-top: -30px;
-                color: black;
                 font-size: 25px;
                 width: 64px;
                 text-align: center;
@@ -108,7 +112,7 @@ html
             }
 
     body
-        div#color
+        div#color.color
             div#title
                 div
                     | MADISON
@@ -124,14 +128,14 @@ html
 
         div#bottom
             a(href='http://www.linkedin.com/profile/view?id=173626678', target = "_blank")
-                img.social(src='/images/linked-in.png', style='margin-left: 50px;')
-                div.label(style='margin-left: 50px;') LINKEDIN
+                img.social.color(src='/images/linked-inT_scaled.png', style='margin-left: 50px;')
+                div.label.font-color(style='margin-left: 50px;') LINKEDIN
             a(href='https://www.facebook.com/madison.a.may', target = "_blank")
-                img.social(src='/images/facebook.png', style='margin-left: 134px;')
-                div.label(style='margin-left: 131px;') FACEBOOK
+                img.social.color(src='/images/facebookT_scaled.png', style='margin-left: 134px;')
+                div.label.font-color(style='margin-left: 131px;') FACEBOOK
             a(href='https://github.com/madisonmay', target = "_blank")
-                img.social(src='/images/github.png', style='margin-left: 218px;')
-                div.label(style='margin-left: 218px;') GITHUB
+                img.social.color(src='/images/githubT_scaled.png', style='margin-left: 218px;')
+                div.label.font-color(style='margin-left: 218px;') GITHUB
             a(href='mailto:madison.may@students.olin.edu', target = "_blank")
-                img.social(src='/images/email.png', style='margin-left: 302px;')
-                div.label(style='margin-left: 302px;') EMAIL
+                img.social.color(src='/images/emailT_scaled.png', style='margin-left: 302px;')
+                div.label.font-color(style='margin-left: 302px;') EMAIL
