@@ -134,6 +134,13 @@ function iterate() {
             if (!window.planets[i].attrs.aY) {
                 window.planets[i].attrs.aY = 0;
             }
+
+            if (distance2(window.planets[i], window.sun) < 6400) {
+                window.planets[i].animate({cx: -9999}, 0);
+                window.planets[i].animate({cy: -9999}, 0);
+                window.planets.splice(i);
+            }
+
             window.planets[i].attrs.acceleration = window.sun.attrs.mass * window.G / distance2(window.planets[i], window.sun);
             window.planets[i].attrs.acceleration_angle = Math.atan((window.planets[i].attrs.cy - window.sun.attrs.cy)/
                                                          (window.planets[i].attrs.cx - window.sun.attrs.cx));
@@ -172,7 +179,7 @@ function iterate() {
             console.log("aY: ", window.sun.attrs.aY);
             console.log(window.sun.attrs.cx + window.sun.attrs.vX);
             console.log(window.sun.attrs.cy + window.sun.attrs.vY);
-            window.sun.animate({cx: window.sun.attrs.cx + window.sun.attrs.vX/120}, 100);
+            window.sun.animate({cx: window.sun.attrs.cx+ window.sun.attrs.vX/120}, 100);
             window.sun.animate({cy: window.sun.attrs.cy + window.sun.attrs.vY/120}, 100);
         }
     }
