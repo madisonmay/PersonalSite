@@ -40,6 +40,7 @@ $(document).mousedown(function(event){
         }
 
         window.planet = window.svg.circle(window.cursorX, window.cursorY, 5);
+        window.planet.alive = true;
         window.planet.attrs.mass = Math.PI*Math.pow(window.planet.attrs.r, 2);
         window.planet.attrs.velocity_angle = Math.atan((window.planet.attrs.cy - window.cursorY)/
                                                  (window.planet.attrs.cx - window.cursorX));
@@ -122,6 +123,11 @@ function render() {
 function iterate() {
     if (window.planets.length > 0) {
         for (var i=0; i<window.planets.length; i++) {
+
+            if (!window.planets[i].alive) {
+                continue;
+            }
+
             if (!window.planets[i].attrs.vX) {
                 window.planets[i].attrs.vX = 0;
             }
@@ -138,7 +144,8 @@ function iterate() {
             if (distance2(window.planets[i], window.sun) < 6400) {
                 window.planets[i].animate({cx: -9999}, 0);
                 window.planets[i].animate({cy: -9999}, 0);
-                window.planets.splice(i);
+                window.planets[i].alive = false;
+                continue;
             }
 
             window.planets[i].attrs.acceleration = window.sun.attrs.mass * window.G / distance2(window.planets[i], window.sun);
@@ -167,7 +174,6 @@ function iterate() {
                                          * Math.cos(window.sun.attrs.acceleration_angle);
             window.sun.attrs.aY = window.sun.attrs.acceleration
                                          * Math.sin(window.sun.attrs.acceleration_angle);
-            console.log(window.sun.attrs.aX, window.sun.attrs.aY)
             if (window.sun.attrs.cx > window.planets[i].attrs.cx) {
                 window.sun.attrs.aX = -window.sun.attrs.aX;
                 window.sun.attrs.aY = -window.sun.attrs.aY;
@@ -175,10 +181,6 @@ function iterate() {
 
             window.sun.attrs.vX = window.sun.attrs.vX + window.sun.attrs.aX;
             window.sun.attrs.vY = window.sun.attrs.vY + window.sun.attrs.aY;
-            console.log("aX: ", window.sun.attrs.aX);
-            console.log("aY: ", window.sun.attrs.aY);
-            console.log(window.sun.attrs.cx + window.sun.attrs.vX);
-            console.log(window.sun.attrs.cy + window.sun.attrs.vY);
             window.sun.animate({cx: window.sun.attrs.cx+ window.sun.attrs.vX/120}, 100);
             window.sun.animate({cy: window.sun.attrs.cy + window.sun.attrs.vY/120}, 100);
         }
