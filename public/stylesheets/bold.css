@@ -1,0 +1,98 @@
+
+//- * {
+//-     border: 2px dotted white;
+//- }
+
+.color {
+    background-color: #000;
+}
+
+.font-color {
+    color: #000;
+}
+
+html {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: 'League Gothic', sans-serif;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+#color {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: white;
+    text-align: left;
+    height: 90%;
+    width: 100%;
+}
+
+#bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: white;
+    width: 100%;
+    height: 10%;
+    min-height: 75px;
+    z-index: 20;
+}
+
+#title {
+    text-align: left;
+    position: absolute;
+    letter-spacing: .2em;
+    top: 40%;
+    height: 200px;
+    margin-top: -100px;
+    margin-left: 50px;
+    font-size: 175px;
+}
+
+.dot {
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+span.link {
+    cursor: pointer;
+}
+
+.social {
+    position: absolute;
+    top: 50%;
+    margin-top: -32px;
+    cursor: pointer;
+}
+
+a:hover .label, a.hover .label {
+    color: white
+}
+
+.label {
+    position: absolute;
+    margin-top: -30px;
+    font-size: 25px;
+    width: 64px;
+    text-align: center;
+    transition: color 0.25s linear; /* vendorless fallback */
+    -o-transition: color 0.25s linear; /* opera */
+    -ms-transition: color 0.25 linear; /* IE 10 */
+    -moz-transition: color 0.25s linear; /* Firefox */
+    -webkit-transition: color 0.25s linear; /*safari and chrome */
+}
